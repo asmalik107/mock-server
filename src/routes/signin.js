@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import passport from 'passport';
+
 const router = Router({mergeParams: true});
 
 /** 
@@ -20,7 +22,7 @@ const router = Router({mergeParams: true});
  *          schema:
  *              type: "object"
  *              properties:
- *                  user:
+ *                  username:
  *                      type: "string"
  *                  password:
  *                      type: "string"
@@ -33,8 +35,13 @@ const router = Router({mergeParams: true});
  *              description: "server error"
 */
 router.post('/signin', (req, res, next) => {
-    console.log('req.body', req.body)
-    res.send({status: 'success'});
+    passport.authenticate('login', (err, user, info) => {
+        if(err || !user){
+            return res.status(400).send(info);
+          }
+
+        res.send({status: 'success'});
+    })(req, res, next);
 });
 
 export default router;

@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import passport from 'passport';
+import { configure } from './src/auth/auth';
 
 const app = express();
 const port = 3002
@@ -22,7 +22,8 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 app.use(bodyParser.json()); 
-app.use(passport.initialize());
+configure(app);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 require('./src/routes/test')(app);
