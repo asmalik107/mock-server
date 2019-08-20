@@ -1,10 +1,12 @@
-import localStrategy from 'passport-local';
 import passport from 'passport';
+import localStrategy from 'passport-local';
+import { Strategy as JWTstrategy, ExtractJWT } from 'passport-jwt';
 import _ from 'lodash';
 import users from '../data/users.json';
 
 export const configure = (app) => {
     app.use(passport.initialize());
+
     passport.use(
         'login',
         new localStrategy(
@@ -28,7 +30,36 @@ export const configure = (app) => {
             } catch (err) {
                 done(err);
             }
-        },
-        ),
+        })
     )
-    };
+
+    // const opts = {
+    //     jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('JWT'),
+    //     secretOrKey: 'jwt-secret'
+    //   };
+
+    // passport.use(
+    //     'jwt',
+    //     new JWTstrategy(opts, (jwt_payload, done) => {
+    //       try {
+    //           console.log(opts, jwt_payload )
+    //         // User.findOne({
+    //         //   where: {
+    //         //     username: jwt_payload.id,
+    //         //   },
+    //         // }).then(user => {
+    //         //   if (user) {
+    //         //     console.log('user found in db in passport');
+    //         //     // note the return removed with passport JWT - add this return for passport local
+    //         //     done(null, user);
+    //         //   } else {
+    //         //     console.log('user not found in db');
+    //         //     done(null, false);
+    //         //   }
+    //         // });
+    //       } catch (err) {
+    //         done(err);
+    //       }
+    //     }),
+    //   );
+};
